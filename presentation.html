@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitchfork PMF — Turn Any Idea Into a Million Dollars</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pitch-gold:   #E8C547;
+    --pitch-rust:   #D4522A;
+    --pitch-orange: #E07B30;
+    --pitch-ink:    #0A0A08;
+    --pitch-cream:  #F5F0E8;
+    --pitch-sage:   #7A9E7E;
+    --pitch-slate:  #1C1C1A;
+    --pitch-purple: #2D1B4E;
+  }
+
+  .reveal-viewport { background: var(--pitch-ink); }
+  .reveal {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 18px;
+    color: var(--pitch-cream);
+  }
+  .reveal .slides section { text-align: left; height: 100%; padding: 0; }
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-family: 'DM Serif Display', serif;
+    text-transform: none;
+    letter-spacing: -0.02em;
+    color: var(--pitch-cream);
+    line-height: 1.1;
+  }
+  .reveal .slides { text-align: left; }
+  .reveal .progress  { color: var(--pitch-orange); }
+  .reveal .controls  { color: var(--pitch-orange); }
+  .reveal .slide-number { display: none; }
+
+  .slide-inner {
+    width: 100%; height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 55px 80px;
+    box-sizing: border-box;
+    position: relative; overflow: hidden;
+  }
+  .slide-inner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    background-size: 200px; pointer-events: none; z-index: 0;
+  }
+  .slide-inner > * { position: relative; z-index: 1; }
+
+  /* ── fragments ── */
+  .reveal .fragment { opacity: 0; transform: translateY(10px); transition: opacity .4s ease, transform .4s ease; }
+  .reveal .fragment.visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══════════ ANIMATIONS ═══════════ */
+  @keyframes floatBill  { 0%,100%{transform:translateY(0) rotate(-8deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
+  @keyframes floatBill2 { 0%,100%{transform:translateY(0) rotate(12deg)} 50%{transform:translateY(-20px) rotate(-6deg)} }
+  @keyframes floatBill3 { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-9px) rotate(9deg)} }
+  @keyframes forkBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes twinkle    { 0%,100%{opacity:.25;transform:scale(1)} 50%{opacity:.9;transform:scale(1.5)} }
+  @keyframes smokePuff  { 0%{opacity:0;transform:translateY(0) scale(.5)} 30%{opacity:.35} 100%{opacity:0;transform:translateY(-55px) scale(1.9)} }
+  @keyframes broomFloat { 0%,100%{transform:rotate(-10deg) translateY(0)} 50%{transform:rotate(-7deg) translateY(-10px)} }
+  @keyframes sparkle    { 0%,100%{opacity:.5;transform:scale(1) rotate(0deg)} 50%{opacity:1;transform:scale(1.3) rotate(20deg)} }
+
+  .bill-1 { animation: floatBill  2.5s ease-in-out infinite; }
+  .bill-2 { animation: floatBill2 3.2s ease-in-out infinite .4s; }
+  .bill-3 { animation: floatBill3 2.9s ease-in-out infinite .9s; }
+  .bill-4 { animation: floatBill  2.7s ease-in-out infinite 1.3s; }
+  .fork-anim { animation: forkBounce 3s ease-in-out infinite; transform-origin: center bottom; }
+  .star  { animation: twinkle 2s ease-in-out infinite; }
+  .star:nth-child(2) { animation-delay:.55s; }
+  .star:nth-child(3) { animation-delay:1.1s; }
+  .star:nth-child(4) { animation-delay:.8s; }
+  .star:nth-child(5) { animation-delay:1.7s; }
+  .smoke  { animation: smokePuff 3.2s ease-out infinite; }
+  .smoke2 { animation: smokePuff 3.2s ease-out infinite 1.1s; }
+  .smoke3 { animation: smokePuff 3.2s ease-out infinite 2.2s; }
+  .broom  { animation: broomFloat 4s ease-in-out infinite; transform-origin: 50% 80%; }
+  .sparkle { animation: sparkle 2.2s ease-in-out infinite; }
+  .sparkle2{ animation: sparkle 1.8s ease-in-out infinite .6s; }
+
+  /* ═══════════ SLIDE 1 TITLE ═══════════ */
+  .slide-title { background: var(--pitch-ink); flex-direction: row; align-items: center; }
+  .title-left  { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-right: 20px; }
+  .eyebrow {
+    font-family: 'DM Mono', monospace; font-size: .6em;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--pitch-orange); margin-bottom: 16px;
+  }
+  .slide-title h1 { font-size: 5em; line-height: .92; margin: 0 0 12px; }
+  .slide-title h1 em { font-style: italic; color: var(--pitch-orange); }
+  .subtitle { font-size: .95em; color: rgba(245,240,232,.48); font-style: italic; margin-top: 14px; }
+  .title-tag {
+    display: inline-block; margin-top: 22px;
+    font-family: 'DM Mono', monospace; font-size: .56em;
+    letter-spacing: .15em; text-transform: uppercase;
+    background: var(--pitch-rust); color: white; padding: 5px 13px; border-radius: 2px;
+  }
+  .title-scene { width: 460px; flex-shrink: 0; }
+
+  /* ═══════════ SLIDE 2 WITCH ═══════════ */
+  .slide-notsection { background: var(--pitch-purple); }
+  .slide-notsection .label {
+    font-family: 'DM Mono', monospace; font-size: .6em;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--pitch-orange); margin-bottom: 12px;
+  }
+  .slide-notsection h2 { font-size: 2.9em; margin: 0 0 20px; color: var(--pitch-cream); }
+  .not-list { list-style: none; padding: 0; margin: 0; }
+  .not-list li {
+    font-size: .97em; padding: 12px 0; border-bottom: 1px solid rgba(245,240,232,.1);
+    display: flex; align-items: flex-start; gap: 13px;
+    line-height: 1.5; color: rgba(245,240,232,.82);
+  }
+  .not-list li:last-child { border-bottom: none; }
+  .not-list .x { font-family: 'DM Mono', monospace; color: var(--pitch-orange); font-size: .9em; margin-top: 2px; flex-shrink: 0; }
+  .compass-quote {
+    margin-top: 20px; padding: 16px 22px;
+    border-left: 4px solid var(--pitch-orange);
+    background: rgba(224,123,48,.1);
+    font-style: italic; font-size: .93em;
+    color: rgba(245,240,232,.78); line-height: 1.6;
+  }
+  .witch-scene { position: absolute; right: 20px; bottom: 0; width: 300px; pointer-events: none; z-index: 0; opacity: .18; }
+
+  /* ═══════════ SLIDE 3 PRONGS ═══════════ */
+  .slide-fork { background: var(--pitch-slate); }
+  .fork-label { font-family: 'DM Mono', monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; color: var(--pitch-orange); margin-bottom: 10px; }
+  .fork-title { font-family: 'DM Serif Display', serif; font-size: 2.7em; margin: 0 0 28px; color: var(--pitch-cream); line-height: 1; }
+  .prongs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .prong { padding: 22px 20px; border-top: 3px solid; background: rgba(255,255,255,.04); }
+  .prong:nth-child(1) { border-color: var(--pitch-orange); }
+  .prong:nth-child(2) { border-color: var(--pitch-rust); }
+  .prong:nth-child(3) { border-color: var(--pitch-sage); }
+  .prong-num { font-family: 'DM Mono', monospace; font-size: .55em; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 7px; opacity: .45; }
+  .prong-name { font-family: 'DM Serif Display', serif; font-size: 1.45em; margin: 0 0 9px; line-height: 1; }
+  .prong:nth-child(1) .prong-name { color: var(--pitch-orange); }
+  .prong:nth-child(2) .prong-name { color: var(--pitch-rust); }
+  .prong:nth-child(3) .prong-name { color: var(--pitch-sage); }
+  .prong-desc { font-size: .78em; line-height: 1.6; color: rgba(245,240,232,.62); }
+  .trident-watermark { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); opacity: .05; width: 380px; pointer-events: none; z-index: 0; }
+
+  /* ═══════════ SLIDE 4 PRINCIPLE ═══════════ */
+  .slide-principle { background: var(--pitch-rust); }
+  .p-label { font-family: 'DM Mono', monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.48); margin-bottom: 16px; }
+  .principle-big { font-family: 'DM Serif Display', serif; font-size: 4em; line-height: 1; color: white; margin: 0 0 20px; }
+  .principle-big em { font-style: italic; opacity: .4; text-decoration: line-through; text-decoration-thickness: 3px; }
+  .principle-explain { font-size: .95em; line-height: 1.65; color: rgba(255,255,255,.8); max-width: 620px; }
+  .principle-explain strong { color: white; }
+  .cauldron-scene { position: absolute; right: 50px; bottom: 20px; width: 260px; opacity: .14; pointer-events: none; z-index: 0; }
+
+  /* ═══════════ SLIDE 5 FOUNDERS ═══════════ */
+  .slide-founders { background: var(--pitch-ink); }
+  .founders-label { font-family: 'DM Mono', monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; color: var(--pitch-orange); margin-bottom: 10px; }
+  .founders-title { font-family: 'DM Serif Display', serif; font-size: 2.5em; color: var(--pitch-cream); margin: 0 0 24px; line-height: 1.05; }
+  .founder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .founder-card { padding: 24px; border: 1px solid rgba(245,240,232,.12); position: relative; }
+  .founder-card::before {
+    content: attr(data-tag); position: absolute; top: -10px; left: 16px;
+    font-family: 'DM Mono', monospace; font-size: .5em; letter-spacing: .15em; text-transform: uppercase;
+    padding: 3px 9px; background: var(--pitch-ink);
+  }
+  .founder-card:nth-child(1)::before { color: var(--pitch-rust);   border: 1px solid var(--pitch-rust); }
+  .founder-card:nth-child(2)::before { color: var(--pitch-orange); border: 1px solid var(--pitch-orange); }
+  .founder-card h3 { font-size: 1.15em; margin: 0 0 9px; color: var(--pitch-cream) !important; }
+  .founder-card p  { font-size: .8em; line-height: 1.65; color: rgba(245,240,232,.58); margin: 0; }
+  .founder-card .highlight { margin-top: 11px; padding: 8px 12px; background: rgba(255,255,255,.05); font-family: 'DM Mono', monospace; font-size: .65em; color: var(--pitch-orange); line-height: 1.5; }
+
+  /* ═══════════ SLIDE 6 FRAMEWORK ═══════════ */
+  .slide-framework { background: var(--pitch-cream); }
+  .slide-framework * { color: var(--pitch-ink) !important; }
+  .fw-label { font-family: 'DM Mono', monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; color: var(--pitch-rust) !important; margin-bottom: 10px; }
+  .fw-title  { font-family: 'DM Serif Display', serif; font-size: 2.7em; margin: 0 0 24px; color: var(--pitch-ink) !important; }
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; align-items: stretch; gap: 20px; padding: 15px 0; border-bottom: 1px solid rgba(10,10,8,.1); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'DM Serif Display', serif; font-size: 2.7em; color: rgba(10,10,8,.06) !important; line-height: 1; min-width: 46px; font-style: italic; }
+  .step-body h3 { font-family: 'Instrument Sans', sans-serif; font-size: .93em; font-weight: 600; margin: 0 0 3px; color: var(--pitch-ink) !important; }
+  .step-body p  { font-size: .8em; line-height: 1.55; margin: 0; color: rgba(10,10,8,.58) !important; }
+
+  /* ═══════════ CASE STUDY ═══════════ */
+  .slide-case { background: var(--pitch-slate); }
+  .case-label   { font-family: 'DM Mono', monospace; font-size: .55em; letter-spacing: .2em; text-transform: uppercase; color: rgba(245,240,232,.33); margin-bottom: 3px; }
+  .case-company { font-family: 'DM Serif Display', serif; font-size: 3.3em; line-height: 1; margin: 0 0 5px; color: var(--pitch-cream); }
+  .case-tagline { font-size: .83em; color: rgba(245,240,232,.43); font-style: italic; margin-bottom: 22px; }
+  .case-axes  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 13px; margin-bottom: 18px; }
+  .case-axis  { padding: 16px; background: rgba(255,255,255,.04); border-top: 2px solid; }
+  .case-axis:nth-child(1) { border-color: var(--pitch-orange); }
+  .case-axis:nth-child(2) { border-color: var(--pitch-rust); }
+  .case-axis:nth-child(3) { border-color: var(--pitch-sage); }
+  .axis-tag  { font-family: 'DM Mono', monospace; font-size: .5em; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 6px; }
+  .case-axis:nth-child(1) .axis-tag { color: var(--pitch-orange); }
+  .case-axis:nth-child(2) .axis-tag { color: var(--pitch-rust); }
+  .case-axis:nth-child(3) .axis-tag { color: var(--pitch-sage); }
+  .axis-content { font-size: .78em; line-height: 1.55; color: rgba(245,240,232,.7); }
+  .case-lesson  { padding: 13px 17px; border-left: 3px solid var(--pitch-orange); background: rgba(224,123,48,.08); font-size: .78em; line-height: 1.6; color: rgba(245,240,232,.7); font-style: italic; }
+  .case-lesson strong { color: var(--pitch-orange); font-style: normal; }
+
+  /* ═══════════ MARKET BADGES ═══════════ */
+  .market-badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: .27em; letter-spacing: .18em; text-transform: uppercase; padding: 4px 11px; border-radius: 2px; margin-left: 12px; vertical-align: middle; position: relative; top: -11px; }
+  .badge-b2b      { background: rgba(122,158,126,.18); color: var(--pitch-sage);   border: 1px solid var(--pitch-sage); }
+  .badge-prosumer { background: rgba(224,123,48,.15);  color: var(--pitch-orange); border: 1px solid var(--pitch-orange); }
+  .badge-b2c      { background: rgba(212,82,42,.15);   color: var(--pitch-rust);   border: 1px solid var(--pitch-rust); }
+
+  /* ═══════════ SLIDE SUMMARY ═══════════ */
+  .slide-end { background: var(--pitch-ink); }
+  .end-label { font-family: 'DM Mono', monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; color: var(--pitch-orange); margin-bottom: 16px; }
+  .end-title { font-family: 'DM Serif Display', serif; font-size: 3.3em; color: var(--pitch-cream); margin: 0 0 22px; line-height: 1.05; }
+  .end-title em { color: var(--pitch-orange); font-style: italic; }
+  .checklist { list-style: none; padding: 0; margin: 0 0 18px; }
+  .checklist li { padding: 8px 0; border-bottom: 1px solid rgba(245,240,232,.07); font-size: .86em; display: flex; gap: 13px; align-items: flex-start; color: rgba(245,240,232,.7); line-height: 1.5; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon { font-family: 'DM Mono', monospace; color: var(--pitch-sage); flex-shrink: 0; margin-top: 1px; }
+  .end-sign { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.45em; color: rgba(245,240,232,.22); margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 1 — TITLE  (pitchfork scoops money)
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-title">
+        <div class="title-left">
+          <div class="eyebrow">A Framework for Founders</div>
+          <h1>Pitch<em>fork</em><br>PMF</h1>
+          <div class="subtitle">Turn any idea into a million dollars.</div>
+          <div class="title-tag">Technology · Business · Product</div>
+          <div style="margin-top:28px;font-family:'DM Mono',monospace;font-size:0.58em;letter-spacing:0.18em;text-transform:uppercase;color:rgba(245,240,232,0.38);">Rishabh Singh</div>
+        </div>
+
+        <!-- ANIMATED PITCHFORK + MONEY SCENE -->
+        <div class="title-scene">
+          <svg viewBox="0 0 460 500" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+
+            <!-- ── floating bills ── -->
+            <g class="bill-1">
+              <rect x="262" y="30" width="84" height="42" rx="5" fill="#4A7A52"/>
+              <rect x="268" y="37" width="72" height="28" rx="3" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity=".55"/>
+              <text x="304" y="55" font-size="14" fill="#E8C547" text-anchor="middle" font-family="serif" font-weight="bold">$100</text>
+            </g>
+            <g class="bill-2">
+              <rect x="318" y="82" width="74" height="38" rx="5" fill="#4A7A52"/>
+              <rect x="324" y="89" width="62" height="24" rx="3" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity=".55"/>
+              <text x="355" y="105" font-size="12" fill="#E8C547" text-anchor="middle" font-family="serif" font-weight="bold">$50</text>
+            </g>
+            <g class="bill-3">
+              <rect x="238" y="92" width="78" height="40" rx="5" fill="#4A7A52"/>
+              <rect x="244" y="99" width="66" height="26" rx="3" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity=".55"/>
+              <text x="277" y="116" font-size="12" fill="#E8C547" text-anchor="middle" font-family="serif" font-weight="bold">$20</text>
+            </g>
+            <g class="bill-4">
+              <rect x="356" y="44" width="68" height="34" rx="5" fill="#4A7A52"/>
+              <rect x="362" y="50" width="56" height="22" rx="3" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity=".55"/>
+              <text x="390" y="65" font-size="11" fill="#E8C547" text-anchor="middle" font-family="serif" font-weight="bold">$$$</text>
+            </g>
+
+            <!-- ── coin pile on ground ── -->
+            <ellipse cx="224" cy="432" rx="48" ry="13" fill="#E8C547" opacity=".18"/>
+            <ellipse cx="224" cy="420" rx="45" ry="12" fill="#E8C547" opacity=".28"/>
+            <ellipse cx="224" cy="409" rx="43" ry="11" fill="#E8C547" opacity=".38"/>
+            <ellipse cx="224" cy="399" rx="41" ry="10" fill="#E8C547" opacity=".5"/>
+            <ellipse cx="224" cy="390" rx="39" ry="9"  fill="#E8C547" opacity=".62"/>
+            <text x="224" y="395" font-size="9" fill="#0A0A08" text-anchor="middle" font-family="monospace" font-weight="bold" opacity=".7">$$$</text>
+
+            <!-- ── THE TRIDENT PITCHFORK ── -->
+            <g class="fork-anim">
+
+              <!-- handle -->
+              <rect x="210" y="195" width="22" height="235" rx="7" fill="#E07B30"/>
+              <!-- handle shine -->
+              <rect x="214" y="215" width="5" height="160" rx="3" fill="white" opacity=".18"/>
+              <!-- handle bottom cap -->
+              <ellipse cx="221" cy="428" rx="13" ry="7" fill="#C05E18"/>
+
+              <!-- cross-bar joining tines to handle -->
+              <rect x="158" y="188" width="126" height="18" rx="6" fill="#E07B30"/>
+              <rect x="160" y="190" width="122" height="5" rx="3" fill="white" opacity=".15"/>
+
+              <!-- LEFT tine shaft -->
+              <rect x="162" y="105" width="20" height="93" rx="6" fill="#E07B30"/>
+              <!-- left tine tip (curved trident point) -->
+              <path d="M162 108 Q152 85 172 72 Q192 85 182 108 Z" fill="#D4522A"/>
+              <path d="M164 106 Q155 87 172 76 Q189 87 180 106 Z" fill="#E07B30"/>
+              <!-- left inner tine curve -->
+              <path d="M180 108 Q185 90 172 80" stroke="#C05E18" stroke-width="2" fill="none" opacity=".5"/>
+
+              <!-- CENTRE tine shaft (tallest) -->
+              <rect x="211" y="88" width="22" height="110" rx="6" fill="#E07B30"/>
+              <!-- centre tip -->
+              <path d="M211 91 Q200 62 222 48 Q244 62 233 91 Z" fill="#D4522A"/>
+              <path d="M213 89 Q203 65 222 53 Q241 65 231 89 Z" fill="#E07B30"/>
+              <!-- centre inner curve -->
+              <path d="M231 91 Q238 70 222 58" stroke="#C05E18" stroke-width="2.5" fill="none" opacity=".5"/>
+
+              <!-- RIGHT tine shaft -->
+              <rect x="260" y="105" width="20" height="93" rx="6" fill="#E07B30"/>
+              <!-- right tine tip -->
+              <path d="M260 108 Q250 85 272 72 Q292 85 280 108 Z" fill="#D4522A"/>
+              <path d="M262 106 Q253 87 272 76 Q291 87 280 106 Z" fill="#E07B30"/>
+              <!-- right inner tine curve -->
+              <path d="M263 108 Q258 90 272 80" stroke="#C05E18" stroke-width="2" fill="none" opacity=".5"/>
+
+            </g>
+
+            <!-- sparkles / $ floating around fork -->
+            <text x="155" y="145" font-size="18" fill="#E8C547" opacity=".6" class="sparkle">✦</text>
+            <text x="298" y="168" font-size="14" fill="#E8C547" opacity=".5" class="sparkle2">✦</text>
+            <text x="175" y="200" font-size="11" fill="#E8C547" opacity=".45" class="bill-1">$</text>
+            <text x="286" y="135" font-size="12" fill="#E8C547" opacity=".4" class="bill-3">$</text>
+            <text x="140" y="195" font-size="10" fill="#E8C547" opacity=".35" class="bill-2">$</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 2 — WHAT IT ISN'T  🧙 WITCH
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-notsection">
+
+        <!-- witch scene background -->
+        <svg class="witch-scene" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- stars -->
+          <text x="230" y="60"  font-size="22" fill="white" class="star">★</text>
+          <text x="40"  y="90"  font-size="16" fill="white" class="star">★</text>
+          <text x="265" y="190" font-size="14" fill="white" class="star">★</text>
+          <text x="20"  y="250" font-size="18" fill="white" class="star">✦</text>
+          <text x="258" y="310" font-size="12" fill="white" class="star">✦</text>
+          <!-- broom handle -->
+          <line x1="40" y1="310" x2="220" y2="170" stroke="white" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+          <!-- broom bristles (animated) -->
+          <g class="broom">
+            <polygon points="196,150 265,118 244,168" fill="white" opacity=".85"/>
+            <polygon points="207,157 270,130 252,176" fill="white" opacity=".6"/>
+            <polygon points="192,162 260,138 248,180" fill="white" opacity=".45"/>
+          </g>
+          <!-- witch body / robe -->
+          <ellipse cx="100" cy="230" rx="38" ry="55" fill="white" opacity=".9"/>
+          <!-- witch head -->
+          <circle cx="100" cy="162" r="30" fill="white" opacity=".9"/>
+          <!-- witch hat -->
+          <polygon points="100,82 68,168 132,168" fill="white"/>
+          <rect x="55" y="164" width="90" height="13" rx="3" fill="white" opacity=".7"/>
+          <!-- hat band buckle -->
+          <rect x="88" y="128" width="24" height="16" rx="3" fill="#2D1B4E" opacity=".75"/>
+          <!-- face dots (eyes) -->
+          <circle cx="90"  cy="158" r="4" fill="#2D1B4E"/>
+          <circle cx="112" cy="158" r="4" fill="#2D1B4E"/>
+          <!-- wand -->
+          <line x1="138" y1="195" x2="175" y2="145" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+          <circle cx="178" cy="142" r="8" fill="white" class="sparkle" opacity=".9"/>
+        </svg>
+
+        <div class="label">First, let's clear the air 🧹</div>
+        <h2>What Pitchfork<br>PMF is <em style="color:var(--pitch-orange);font-style:italic;">not</em></h2>
+        <ul class="not-list">
+          <li class="fragment">
+            <span class="x">✗</span>
+            <span>A definition of PMF — that debate belongs to economists, VCs, and grumpy wizards.</span>
+          </li>
+          <li class="fragment">
+            <span class="x">✗</span>
+            <span>A guarantee — markets shift, customers surprise you, life casts its own spells. No potion included.</span>
+          </li>
+          <li class="fragment">
+            <span class="x">✗</span>
+            <span>A one-time ritual — it's a living compass, not a checkbox. You don't cast this spell once.</span>
+          </li>
+        </ul>
+        <div class="compass-quote fragment">
+          Our goal: give founders a <strong>reliable framework</strong> — a compass to manage the balance beam of all the moving parts, and ensure you're always moving toward an idea that <strong>actually generates revenue</strong>.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 3 — THREE PRONGS  (trident watermark)
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-fork">
+
+        <!-- large trident watermark -->
+        <svg class="trident-watermark" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="130" y="195" width="40" height="210" rx="10" fill="#E07B30"/>
+          <rect x="68"  y="95"  width="36" height="118" rx="8" fill="#E07B30"/>
+          <rect x="196" y="95"  width="36" height="118" rx="8" fill="#E07B30"/>
+          <path d="M68 98 Q55 60 86 42 Q117 60 104 98 Z" fill="#E07B30"/>
+          <path d="M130 80 Q115 38 150 22 Q185 38 170 80 Z" fill="#E07B30"/>
+          <path d="M196 98 Q183 60 214 42 Q245 60 232 98 Z" fill="#E07B30"/>
+          <rect x="58" y="187" width="184" height="24" rx="9" fill="#E07B30"/>
+        </svg>
+
+        <div class="fork-label">The Framework — Why "Pitchfork" 🔱</div>
+        <div class="fork-title">Three Prongs.<br>One Direction.</div>
+        <div class="prongs">
+          <div class="prong fragment">
+            <div class="prong-num">Prong 01</div>
+            <div class="prong-name">Technology</div>
+            <div class="prong-desc">The core innovation — the invention, protocol, framework, or design approach that underlies your entire business. The stem. The thing only you have (or uniquely combined).</div>
+          </div>
+          <div class="prong fragment">
+            <div class="prong-num">Prong 02</div>
+            <div class="prong-name">Business</div>
+            <div class="prong-desc">The key outcome — the specific workflow you're optimizing, the specific pain you're eradicating. The dollars. The reason anyone opens their wallet on a Tuesday.</div>
+          </div>
+          <div class="prong fragment">
+            <div class="prong-num">Prong 03</div>
+            <div class="prong-name">Product</div>
+            <div class="prong-desc">The materialization — the shape of your technology in the world. How your idea slots into existing workflows. The UX. The thing people actually touch.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — GUIDING PRINCIPLE  🧪 CAULDRON
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-principle">
+
+        <!-- cauldron with animated smoke -->
+        <svg class="cauldron-scene" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- smoke -->
+          <circle class="smoke"  cx="118" cy="68" r="24" fill="white"/>
+          <circle class="smoke2" cx="148" cy="55" r="19" fill="white"/>
+          <circle class="smoke3" cx="165" cy="72" r="15" fill="white"/>
+          <!-- cauldron body -->
+          <path d="M50 175 Q50 240 140 240 Q230 240 230 175 Z" fill="white" opacity=".92"/>
+          <!-- liquid surface -->
+          <ellipse cx="140" cy="160" rx="92" ry="28" fill="white"/>
+          <!-- green glow on liquid -->
+          <ellipse cx="140" cy="157" rx="82" ry="22" fill="#7A9E7E" opacity=".55"/>
+          <!-- bubble -->
+          <circle cx="108" cy="162" r="9"  fill="#D4522A" opacity=".55"/>
+          <circle cx="158" cy="155" r="7"  fill="#D4522A" opacity=".45"/>
+          <circle cx="130" cy="165" r="5"  fill="#D4522A" opacity=".5"/>
+          <!-- rim -->
+          <ellipse cx="140" cy="148" rx="92" ry="22" fill="white"/>
+          <ellipse cx="140" cy="146" rx="86" ry="17" fill="#D4522A" opacity=".4"/>
+          <!-- feet -->
+          <rect x="74"  y="232" width="18" height="32" rx="5" fill="white" opacity=".85"/>
+          <rect x="131" y="237" width="18" height="30" rx="5" fill="white" opacity=".85"/>
+          <rect x="188" y="232" width="18" height="32" rx="5" fill="white" opacity=".85"/>
+          <!-- handles -->
+          <path d="M55 162 Q44 128 72 120 Q100 112 104 148" stroke="white" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M225 162 Q236 128 208 120 Q180 112 176 148" stroke="white" stroke-width="11" fill="none" stroke-linecap="round"/>
+        </svg>
+
+        <div class="p-label">The one incantation you must memorize 🔮</div>
+        <div class="principle-big">Technology<br><em>≠</em> Product</div>
+        <div class="principle-explain fragment">
+          Your technology is <strong>not</strong> your product. The product automates the workflows <em>around</em> the technology — making integration seamless, invisible, effortless.<br><br>
+          <strong>The product is the UX. It is not the key innovation.</strong> Don't confuse the two, or the cauldron boils over and you end up building a demo with no users.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 5 — FOUNDER TYPES  🧙 SPELLBOOKS
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-founders">
+        <div class="founders-label">Where You Start Matters</div>
+        <div class="founders-title">Two kinds of founders.<br>One pitchfork. 🔱</div>
+        <div class="founder-grid">
+          <div class="founder-card fragment" data-tag="Non-Technical Founder">
+            <h3>📖 Starts with Business</h3>
+            <p>You have the outcome, the pain, the market. You're holding the spellbook but need someone to conjure the technology that makes it real.</p>
+            <div class="highlight">→ Find the tech layer that unlocks the business you already see clearly.</div>
+          </div>
+          <div class="founder-card fragment" data-tag="Technical Founder">
+            <h3>⚗️ Starts with Technology</h3>
+            <p>You brewed the potion. Now you need someone to drink it. Most discourage "tech-first" — but it's been done, many times, by wizards just like you.</p>
+            <div class="highlight">→ Find ONE thin workflow. Anchor there first. The other 47 use-cases can wait.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 6 — HOW TO USE IT
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-framework">
+        <div class="fw-label">How to Apply Pitchfork PMF</div>
+        <div class="fw-title">Two steps.<br>That's it.</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Identify all three axes</h3>
+              <p>Name your Technology, Business, and Product in one sentence each. If any one is fuzzy, conflated with another, or answered with "well it depends" — you don't have PMF. Write it down. Now.</p>
+            </div>
+          </div>
+          <div class="step fragment">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Validate each axis separately</h3>
+              <p><strong>Technology:</strong> Does it work? <strong>Business:</strong> Do people really feel the pain? Does solving it provide real lift? <strong>Product:</strong> Does the shape fit the workflow? Iterate — user interviews, data, relentless obsession.</p>
+            </div>
+          </div>
+          <div class="step fragment">
+            <div class="step-num">→</div>
+            <div class="step-body">
+              <h3>The key insight 💡</h3>
+              <p>Once Technology and Business are validated, Product is a <em>navigable</em> problem. The iteration is the job, not the failure. Find people willing to work with you — and build.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 7 — POSTHOG
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 01 / 07</div>
+        <div class="case-company">PostHog <span class="market-badge badge-b2b">B2B</span></div>
+        <div class="case-tagline">Open-source product analytics — the one that lives in <em>your</em> infra, not theirs</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">Open-source, self-hostable event pipeline — analytics, feature flags, session replay, A/B tests in one data layer. No third-party cloud required, no GDPR nightmare fuel.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Engineering teams hate sending customer behavioral data to five different SaaS vendors. PostHog kills the privacy-vs-insight tradeoff entirely. One tool, your servers.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">All-in-one product OS: funnels, heatmaps, feature flags, A/B tests in one interface. Deploys in minutes, baked into the dev workflow rather than bolted on top.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The event pipeline is not the product. The <em>workflow that replaces five SaaS subscriptions with one self-hosted dashboard</em> is what gets engineers to evangelize it internally.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 8 — SUPABASE
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 02 / 07</div>
+        <div class="case-company">Supabase <span class="market-badge badge-b2b">B2B</span></div>
+        <div class="case-tagline">Open-source Firebase — with SQL, like God intended</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">PostgreSQL — battle-tested, relational — wrapped with a real-time engine, auto-generated REST & GraphQL APIs, row-level security, and edge functions. Not invented. Masterfully orchestrated.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Devs need a backend fast. Firebase locked you into proprietary NoSQL. Supabase offers full SQL power with zero vendor lock-in and a free tier that actually works.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">One dashboard provisions auth, database, storage, and edge functions in minutes. The UX deliberately mirrors Firebase — collapsing the migration cost to near zero.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> Supabase didn't invent Postgres. They <em>productized the workflow around it so well</em> that devs feel 10× faster. Technology ≠ Product, exhibit B.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 9 — BREX
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 03 / 07</div>
+        <div class="case-company">Brex <span class="market-badge badge-b2b">B2B</span></div>
+        <div class="case-tagline">Corporate cards for startups — no personal credit, no adult supervision required</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">Real-time underwriting using non-traditional signals — cash balance, investor backing, burn rate — bypassing personal credit history. The banks never thought to do this.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Startups couldn't get corporate cards. The legacy credit system excluded them structurally. Brex found a massive, creditworthy segment left entirely on the table.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">A modern spend OS — cards, expense management, bill pay — shaped precisely around how startups actually spend. Not a bank. A founder's financial command center.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The underwriting model is not the product. The <em>entire spend workflow designed for startup DNA</em> is what drove adoption, retention, and enterprise expansion.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 10 — VERCEL
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 04 / 07</div>
+        <div class="case-company">Vercel <span class="market-badge badge-prosumer">Prosumer</span></div>
+        <div class="case-tagline">Push to deploy. That's it. That's the product.</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">Edge-first deployment infrastructure — instant global CDN, serverless functions at the edge, preview deployments on every git push. Git as the deployment primitive.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Frontend devs ship fast but deploy slow. DevOps friction kills momentum. Vercel eliminates the entire "getting it live" tax — from push to production in under 30 seconds.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">Zero-config deploys, branch previews, analytics, Web Vitals — all invisible until needed. Built by Next.js creators: the framework and platform share the same DNA.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The CDN is not the product. The <em>experience of pushing code and watching it go live globally in 30 seconds</em> is why developers evangelize Vercel to their entire company.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 11 — FIRECRAWL  🕷️ (spiderweb deco)
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <!-- spiderweb corner -->
+        <svg style="position:absolute;top:-10px;right:-10px;width:180px;opacity:.07;pointer-events:none;z-index:0;" viewBox="0 0 180 180" fill="none">
+          <line x1="90" y1="90" x2="0"   y2="0"   stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="180" y2="0"   stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="180" y2="90"  stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="180" y2="180" stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="90"  y2="180" stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="0"   y2="180" stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="0"   y2="90"  stroke="white" stroke-width="1.5"/>
+          <line x1="90" y1="90" x2="90"  y2="0"   stroke="white" stroke-width="1.5"/>
+          <ellipse cx="90" cy="90" rx="28" ry="28" stroke="white" stroke-width="1.5" fill="none"/>
+          <ellipse cx="90" cy="90" rx="55" ry="55" stroke="white" stroke-width="1.5" fill="none"/>
+          <ellipse cx="90" cy="90" rx="82" ry="82" stroke="white" stroke-width="1.5" fill="none"/>
+          <circle  cx="90" cy="36" r="6" fill="white" opacity=".6"/>
+        </svg>
+
+        <div class="case-label">Case Study 05 / 07</div>
+        <div class="case-company">Firecrawl 🕷️ <span class="market-badge badge-b2b">B2B</span></div>
+        <div class="case-tagline">Turn any website into LLM-ready data. No headless browser nightmares required.</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">Web crawling engine that renders JS-heavy pages, handles auth flows, and outputs clean Markdown structured for LLM consumption. A very polite, very fast spider.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">AI teams building RAG pipelines waste enormous time writing scrapers that break on Monday mornings. Firecrawl is the reliable data acquisition layer nobody wants to build themselves.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">One API call: send a URL, receive clean Markdown. Handles crawl depth, sitemaps, rate limits, JS rendering automatically. Plugs into any AI pipeline in under 10 minutes.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The scraper engine is not the product. The <em>one-line API that makes any website a data source for your AI</em> — without ever touching a config file — is what commands the price point.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 12 — CURSOR  ✨
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 06 / 07</div>
+        <div class="case-company">Cursor ✨ <span class="market-badge badge-prosumer">Prosumer</span></div>
+        <div class="case-tagline">The AI code editor that doesn't make you feel stupid for using AI</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">Deep codebase indexing + frontier LLM integration — the editor understands your entire repo as context, not just the open file. Agentic edits, explain, refactor at repo scale.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Developers lose hours context-switching, hunting docs, writing boilerplate. Cursor collapses the gap between intent and implementation — coding feels like thinking out loud.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">A VS Code fork — zero learning curve. AI is woven into every keystroke: inline completions, repo-aware chat, multi-file edits. It accelerates the workflow you already have.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The LLM integration is not the product. The <em>familiar environment where AI feels native, not bolted on</em> is why Cursor has cult-level retention. Comfort is an actual moat.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 13 — LOVABLE  💖
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-case">
+        <div class="case-label">Case Study 07 / 07</div>
+        <div class="case-company">Lovable 💖 <span class="market-badge badge-b2c">B2C</span></div>
+        <div class="case-tagline">Build a full-stack app with a prompt. No terminal. No trauma. No excuses.</div>
+        <div class="case-axes">
+          <div class="case-axis">
+            <div class="axis-tag">Technology</div>
+            <div class="axis-content">LLM-driven full-stack code generation — React frontend, Supabase backend, deployed to the web — produced from natural language in an iterative conversation. Genuinely witchcraft.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Business</div>
+            <div class="axis-content">Non-technical founders had ideas but no engineering budget. Validating an idea cost 3 months and $50K. Lovable collapses that to an afternoon and the price of a nice dinner.</div>
+          </div>
+          <div class="case-axis">
+            <div class="axis-tag">Product</div>
+            <div class="axis-content">A chat interface that builds, previews, and deploys a real app with auth, database, and a live URL. The IDE is completely invisible. The code exists — you just never have to see it.</div>
+          </div>
+        </div>
+        <div class="case-lesson fragment">
+          <strong>Pitchfork lesson:</strong> The code generator is not the product. The <em>journey from idea to live app without ever opening a terminal</em> — that psychological unlock — makes non-technical founders weep tears of joy.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 14 — SUMMARY  🔱
+    ═══════════════════════════════════════════ -->
+    <section>
+      <div class="slide-inner slide-end">
+
+        <!-- watermark trident -->
+        <svg style="position:absolute;right:-50px;top:50%;transform:translateY(-50%);width:350px;opacity:.045;pointer-events:none;z-index:0;" viewBox="0 0 300 420" fill="none">
+          <rect x="130" y="195" width="40" height="210" rx="10" fill="#E07B30"/>
+          <rect x="68"  y="95"  width="36" height="118" rx="8" fill="#E07B30"/>
+          <rect x="196" y="95"  width="36" height="118" rx="8" fill="#E07B30"/>
+          <path d="M68 98 Q55 60 86 42 Q117 60 104 98 Z" fill="#E07B30"/>
+          <path d="M130 80 Q115 38 150 22 Q185 38 170 80 Z" fill="#E07B30"/>
+          <path d="M196 98 Q183 60 214 42 Q245 60 232 98 Z" fill="#E07B30"/>
+          <rect x="58" y="187" width="184" height="24" rx="9" fill="#E07B30"/>
+        </svg>
+
+        <div class="end-label">The Final Spell 🔱</div>
+        <div class="end-title">The compass,<br>not the <em>destination.</em></div>
+        <ul class="checklist">
+          <li>
+            <span class="check-icon">◆</span>
+            <span>Identify your three axes — Technology, Business, Product — clearly and <em>separately</em>. If they blur together, keep digging.</span>
+          </li>
+          <li class="fragment">
+            <span class="check-icon">◆</span>
+            <span>Validate each one. Until validated, they're assumptions. Assumptions are spells that haven't been cast yet.</span>
+          </li>
+          <li class="fragment">
+            <span class="check-icon">◆</span>
+            <span>Technology ≠ Product. Your invention is the engine. The product is the car the customer actually drives off the lot.</span>
+          </li>
+          <li class="fragment">
+            <span class="check-icon">◆</span>
+            <span>Markets shift. Moving parts keep moving. Return to the framework whenever you feel lost in the woods. 🌲</span>
+          </li>
+          <li class="fragment">
+            <span class="check-icon">◆</span>
+            <span>Once Tech + Business are solid — Product is just iteration. Find your first users. Pick up the pitchfork. Build.</span>
+          </li>
+        </ul>
+        <div class="end-sign fragment">Pitchfork PMF 🔱 — point it at revenue. 💰</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'fade',
+    transitionSpeed: 'slow',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 720,
+    margin: 0,
+  });
+</script>
+</body>
+</html>
